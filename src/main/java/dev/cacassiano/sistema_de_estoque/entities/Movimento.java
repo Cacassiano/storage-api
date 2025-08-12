@@ -28,7 +28,7 @@ public class Movimento {
     int amount;
 
     @ManyToOne
-    @JoinColumn(name="issuer_id")
+    @JoinColumn(name="issuer")
     Fornecedor issuer;
 
     @Column(name="issued_at", nullable=false, unique=false)

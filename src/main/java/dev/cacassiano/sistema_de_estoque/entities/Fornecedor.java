@@ -2,6 +2,8 @@ package dev.cacassiano.sistema_de_estoque.entities;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CNPJ;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,8 +19,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Fornecedor {
-    @Id @Column(name="id", nullable=false, unique=true) @GeneratedValue(strategy=GenerationType.UUID)
-    String id;
+    @Id
+    @Column(name="cnpj", nullable=false, unique=true)
+    String cnpj;
 
     @Column(name="name", nullable=false)
     String name;

@@ -38,6 +38,6 @@ public class Produto {
     LocalDateTime updated_at;
 
     @ManyToOne
-    @JoinColumn(name="fornecedor_id")
+    @JoinColumn(name="fornecedor_cnpj")
     Fornecedor fornecedor;
 }
