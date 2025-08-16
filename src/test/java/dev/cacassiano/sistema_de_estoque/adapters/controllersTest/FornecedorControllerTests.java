@@ -35,10 +35,6 @@ public class FornecedorControllerTests {
     private MockMvc mvc; 
     @MockitoBean
     private FornecedorService fornecedorService;
-    // @MockitoBean
-    // private FornecedorRepository fornecedorRepository;
-    // @MockitoBean
-    // private FornecedorController fornecedorController;
     private final String baseUrl = "/api/v1/fornecedor";
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -47,7 +43,7 @@ public class FornecedorControllerTests {
         FornecedorRequestDTO req = new FornecedorRequestDTO(
             "teste@gmail.com", 
             "pppppppppp", 
-            "jhhhhhhhhhhhhhhhhhh", 
+            "121111111111", 
             "53.608.573/0001-69"
         );
         Fornecedor myFornecedor = new Fornecedor(req);
@@ -66,7 +62,7 @@ public class FornecedorControllerTests {
         verify(fornecedorService, times(1)).create(any());
 
         assertEquals(myFornecedor.getCnpj(), resultFornecedor.getCnpj());
-        assertEquals(myFornecedor.getPassword(), resultFornecedor.getPassword());
+        assertEquals(myFornecedor.getPhone_number(), resultFornecedor.getPhone_number());
         assertEquals(myFornecedor.getName(), resultFornecedor.getName());
         assertEquals(myFornecedor.getEmail(), resultFornecedor.getEmail());
     }

@@ -27,8 +27,8 @@ public class Fornecedor {
     @Column(name="name", nullable=false)
     String name;
     
-    @Column(name="password", nullable=false, unique=false)
-    String password;
+    @Column(name="phone_number", nullable=true, unique=false)
+    String phone_number;
 
     @Column(name="email", nullable=false, unique=true)
     String email;
@@ -39,7 +39,7 @@ public class Fornecedor {
     public Fornecedor(FornecedorRequestDTO req) {
         this.cnpj = req.getCnpj();
         this.name = req.getName();
-        this.password = req.getPassword();
+        this.phone_number = req.getPhone_number();
         this.email = req.getEmail(); 
     }
 }

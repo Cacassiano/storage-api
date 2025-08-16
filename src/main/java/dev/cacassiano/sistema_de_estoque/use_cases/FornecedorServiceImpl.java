@@ -15,11 +15,6 @@ public class FornecedorServiceImpl implements FornecedorService{
     private FornecedorRepository repository;
 
     @Override
-    public Fornecedor login(FornecedorRequestDTO req) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public Fornecedor create(FornecedorRequestDTO req) {
         if(repository.existsById(req.getCnpj()) || repository.findbyEmail(req.getEmail()).isPresent()) {
             throw new DataIntegrityViolationException("This fornecedor already exists");
