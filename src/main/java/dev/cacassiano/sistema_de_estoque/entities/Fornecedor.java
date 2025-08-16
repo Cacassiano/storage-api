@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fornecedor {
+public class Fornecedor { 
     @Id
     @Column(name="cnpj", nullable=false, unique=true)
     String cnpj;
@@ -35,6 +35,9 @@ public class Fornecedor {
     
     @OneToMany(mappedBy="id")
     List<Produto> produtos;
+
+    @OneToMany(mappedBy="lote_id")
+    List<Lote> lotes;
 
     public Fornecedor(FornecedorRequestDTO req) {
         this.cnpj = req.getCnpj();
