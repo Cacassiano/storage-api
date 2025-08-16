@@ -9,9 +9,13 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-@ControllerAdvice
+import dev.cacassiano.sistema_de_estoque.handlers.exception.NotFoundException;
+
+@ControllerAdvice(annotations= RestController.class)
 public class GlobalExceptioHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> invalidRequest(MethodArgumentNotValidException e) {
@@ -27,4 +31,17 @@ public class GlobalExceptioHandler {
         resp.put("timestamp", OffsetDateTime.now().toString());
         return ResponseEntity.internalServerError().body(resp);
     }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Map<String, String>> notFoundExceptionHandler(NotFoundException e) {
+        Map<String, String> resp = new HashMap<>();
+        resp.put("Message", e.getMessage());
+        resp.put("timestamp", OffsetDateTime.now().toString());
+        return ResponseEntity.internalServerError().body(resp);
+    }
+    // @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    // public ResponseEntity<Map<String, String>> invalidMethodHandler(HttpRequestMethodNotSupportedException e){
+    //      Map<String, String> resp = new HashMap<>();
+    //     resp.put("Message", e.getMessage());
+    //     return ResponseEntity.status(405).body(resp);
+    // }
 }

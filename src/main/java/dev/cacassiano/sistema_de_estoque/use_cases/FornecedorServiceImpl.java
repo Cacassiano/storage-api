@@ -1,10 +1,8 @@
 package dev.cacassiano.sistema_de_estoque.use_cases;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorRequestDTO;
@@ -28,8 +26,9 @@ public class FornecedorServiceImpl implements FornecedorService{
     }
 
     @Override
-    public void delete() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void delete(String id) throws NotFoundException{
+        if(!repository.existsById(id)) throw new NotFoundException("Fornecedor Does not exists");
+        repository.deleteById(id);
     }
 
     @Override
