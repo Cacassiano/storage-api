@@ -1,8 +1,11 @@
 package dev.cacassiano.sistema_de_estoque.handlers;
 
+
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,5 +20,11 @@ public class GlobalExceptioHandler {
         resp.put("Argument", e.getFieldError().getField());
         return ResponseEntity.badRequest().body(resp);
     }
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> constraintViolationHandler(DataIntegrityViolationException e) {
+        Map<String, String> resp = new HashMap<>();
+        resp.put("Message", e.getMessage());
+        resp.put("timestamp", OffsetDateTime.now().toString());
+        return ResponseEntity.internalServerError().body(resp);
+    }
 }

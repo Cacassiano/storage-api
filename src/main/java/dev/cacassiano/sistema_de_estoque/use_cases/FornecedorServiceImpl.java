@@ -1,6 +1,7 @@
 package dev.cacassiano.sistema_de_estoque.use_cases;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorRequestDTO;
@@ -20,8 +21,11 @@ public class FornecedorServiceImpl implements FornecedorService{
 
     @Override
     public Fornecedor create(FornecedorRequestDTO req) {
+        if(repository.existsById(req.getCnpj()) || repository.findbyEmail(req.getEmail()).isPresent()) {
+            throw new DataIntegrityViolationException("This fornecedor already exists");
+        }
         Fornecedor fornecedor = new Fornecedor(req);
-        return this.repository.save(fornecedor);
+        return repository.save(fornecedor);
     }
 
     @Override

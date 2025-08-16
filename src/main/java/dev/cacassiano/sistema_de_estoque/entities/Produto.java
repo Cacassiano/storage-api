@@ -31,6 +31,12 @@ public class Produto {
     @Column(name="price_cents", unique=false)
     BigInteger price_cents;
 
+    @Column(name="batch", nullable=false, unique=false)
+    Long batch;
+    
+    @Column(name="expiration_date", nullable=false, unique=false)
+    LocalDateTime expiration_date;
+    
     @Column(name="created_at", nullable=false, unique=false)
     LocalDateTime created_at;
 
