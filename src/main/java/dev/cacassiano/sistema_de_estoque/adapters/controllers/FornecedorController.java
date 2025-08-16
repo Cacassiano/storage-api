@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorRequestDTO;
 import dev.cacassiano.sistema_de_estoque.adapters.services.FornecedorService;
 import dev.cacassiano.sistema_de_estoque.entities.Fornecedor;
+import dev.cacassiano.sistema_de_estoque.handlers.exception.NotFoundException;
 import jakarta.validation.Valid;
 
 
@@ -21,8 +22,12 @@ public class FornecedorController {
     private FornecedorService service;
 
     @PostMapping("/register")
-    // No futuro enviar o token de autentificação de volta
     public ResponseEntity<Fornecedor> registerFornecedor(@RequestBody @Valid FornecedorRequestDTO request) {
-        return ResponseEntity.status(201).body(this.service.create(request));
+        return ResponseEntity.status(201).body(service.create(request));
+    } 
+
+    @PostMapping("/update")
+    public ResponseEntity<Fornecedor> updateFornecedor(@RequestBody @Valid FornecedorRequestDTO request) throws NotFoundException {
+        return ResponseEntity.ok().body(service.update(request));
     } 
 }
