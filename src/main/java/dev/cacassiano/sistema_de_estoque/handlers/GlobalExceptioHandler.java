@@ -10,9 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import dev.cacassiano.sistema_de_estoque.handlers.exception.NotFoundException;
+import dev.cacassiano.sistema_de_estoque.handlers.exceptions.NotFoundException;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @ControllerAdvice(annotations= RestController.class)
 public class GlobalExceptioHandler {

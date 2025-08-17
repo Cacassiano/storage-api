@@ -1,4 +1,4 @@
-package dev.cacassiano.sistema_de_estoque.adapters.DTOs;
+package dev.cacassiano.sistema_de_estoque.adapters.DTOs.supplier;
 
 
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class FornecedorRequestDTO {
+public class SupplierRequestDTO {
     @NotBlank
     @Email(message="Invalid email")
     String email;

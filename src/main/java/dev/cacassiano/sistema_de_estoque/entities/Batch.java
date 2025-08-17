@@ -13,16 +13,16 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Table(name="lote")
-@Entity(name="lote")
+@Table(name="batch")
+@Entity(name="batch")
 @Getter
 @Setter
-public class Lote {
+public class Batch {
     @Id @Column(name="id", nullable=false, unique= true) @GeneratedValue(strategy= GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable=false, unique= false, name="lote_id") 
-    Long lote_id;
+    @Column(nullable=false, unique= false, name="batch_id") 
+    Long batch_id;
 
     @Column(name="expiration_date", nullable=false, unique=false)
     LocalDateTime expiration_date;
@@ -34,10 +34,10 @@ public class Lote {
     int batch_amount;
 
     @ManyToOne
-    @JoinColumn(name="fornecedor_cnpj")
-    Fornecedor fornecedor;
+    @JoinColumn(name="supplier_cnpj")
+    Supplier supplier;
 
     @ManyToOne
-    @JoinColumn(name="produto_id")
-    Produto produto;
+    @JoinColumn(name="product_id")
+    Product product;
 }

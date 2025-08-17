@@ -5,23 +5,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorRequestDTO;
-import dev.cacassiano.sistema_de_estoque.adapters.repositories.FornecedorRepository;
-import dev.cacassiano.sistema_de_estoque.adapters.services.FornecedorService;
-import dev.cacassiano.sistema_de_estoque.entities.Fornecedor;
-import dev.cacassiano.sistema_de_estoque.handlers.exception.NotFoundException;
+import dev.cacassiano.sistema_de_estoque.adapters.DTOs.supplier.SupplierRequestDTO;
+import dev.cacassiano.sistema_de_estoque.adapters.repositories.SupplierRepository;
+import dev.cacassiano.sistema_de_estoque.adapters.services.SupplierService;
+import dev.cacassiano.sistema_de_estoque.entities.Supplier;
+import dev.cacassiano.sistema_de_estoque.handlers.exceptions.NotFoundException;
 @Service
-public class FornecedorServiceImpl implements FornecedorService{
+public class SupplierServiceImpl implements SupplierService{
 
     @Autowired
-    private FornecedorRepository repository;
+    private SupplierRepository repository;
 
     @Override
-    public Fornecedor create(FornecedorRequestDTO req) {
-        if(repository.existsById(req.getCnpj()) || repository.findbyEmail(req.getEmail()).isPresent()) {
+    public Supplier create(SupplierRequestDTO req) {
+        if(repository.existsById(req.getCnpj()) || repository.findByEmail(req.getEmail()).isPresent()) {
             throw new DataIntegrityViolationException("This fornecedor already exists");
         }
-        Fornecedor fornecedor = new Fornecedor(req);
+        Supplier fornecedor = new Supplier(req);
         return repository.save(fornecedor);
     }
 
@@ -32,9 +32,9 @@ public class FornecedorServiceImpl implements FornecedorService{
     }
 
     @Override
-    public Fornecedor update(FornecedorRequestDTO req) throws NotFoundException{
+    public Supplier update(SupplierRequestDTO req) throws NotFoundException{
         if(!repository.existsById(req.getCnpj())) throw new NotFoundException("Fornecedor Does not exists");
-        Fornecedor fornecedor = new Fornecedor(req);   
+        Supplier fornecedor = new Supplier(req);   
         repository.deleteById(req.getCnpj());     
         return repository.save(fornecedor);
     }

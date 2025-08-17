@@ -1,11 +1,11 @@
-package dev.cacassiano.sistema_de_estoque.adapters.DTOs;
+package dev.cacassiano.sistema_de_estoque.adapters.DTOs.supplier;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import jakarta.validation.constraints.NotBlank;
 
 
-public class FornecedorCNPJDTO {
+public class SupplierCNPJDTO {
     @NotBlank
     @CNPJ(message="CNPJ does not exists")
     String cnpj;
@@ -13,7 +13,7 @@ public class FornecedorCNPJDTO {
     public String getCnpj() {
         return this.cnpj;
     }
-    public FornecedorCNPJDTO(String cnpj) {
+    public SupplierCNPJDTO(String cnpj) {
         this.cnpj = cnpj;
     }
 }

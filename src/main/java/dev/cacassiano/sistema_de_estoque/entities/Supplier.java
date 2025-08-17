@@ -2,7 +2,7 @@ package dev.cacassiano.sistema_de_estoque.entities;
 
 import java.util.List;
 
-import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorRequestDTO;
+import dev.cacassiano.sistema_de_estoque.adapters.DTOs.supplier.SupplierRequestDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,13 +13,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "Fornecedor")
-@Table(name="Fornecedor")
+@Entity(name = "supplier")
+@Table(name="supplier")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fornecedor { 
+public class Supplier { 
     @Id
     @Column(name="cnpj", nullable=false, unique=true)
     String cnpj;
@@ -34,12 +34,12 @@ public class Fornecedor {
     String email;
     
     @OneToMany(mappedBy="id")
-    List<Produto> produtos;
+    List<Product> products;
 
-    @OneToMany(mappedBy="lote_id")
-    List<Lote> lotes;
+    @OneToMany(mappedBy="id")
+    List<Batch> batchs;
 
-    public Fornecedor(FornecedorRequestDTO req) {
+    public Supplier(SupplierRequestDTO req) {
         this.cnpj = req.getCnpj();
         this.name = req.getName();
         this.phone_number = req.getPhone_number();

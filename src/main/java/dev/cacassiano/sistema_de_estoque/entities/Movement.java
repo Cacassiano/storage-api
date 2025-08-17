@@ -13,11 +13,11 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "Movimento")
-@Table(name="Movimento")
+@Entity(name = "movement")
+@Table(name="movement")
 @Getter
 @Setter
-public class Movimento {
+public class Movement {
     @Id @Column(name="id", nullable=false, unique=true) @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id; 
 
@@ -29,7 +29,7 @@ public class Movimento {
 
     @ManyToOne
     @JoinColumn(name="issuer")
-    Fornecedor issuer;
+    Supplier issuer;
 
     @Column(name="issued_at", nullable=false, unique=false)
     LocalDateTime issued_at;

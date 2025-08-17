@@ -25,32 +25,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorCNPJDTO;
-import dev.cacassiano.sistema_de_estoque.adapters.DTOs.FornecedorRequestDTO;
-import dev.cacassiano.sistema_de_estoque.adapters.repositories.FornecedorRepository;
-import dev.cacassiano.sistema_de_estoque.entities.Fornecedor;
+import dev.cacassiano.sistema_de_estoque.adapters.DTOs.supplier.SupplierCNPJDTO;
+import dev.cacassiano.sistema_de_estoque.adapters.DTOs.supplier.SupplierRequestDTO;
+import dev.cacassiano.sistema_de_estoque.adapters.repositories.SupplierRepository;
+import dev.cacassiano.sistema_de_estoque.entities.Supplier;
 
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class FornecedorControllerTests {
+public class SupplierControllerTests {
     @Autowired
     private MockMvc mvc; 
     @Autowired
-    private FornecedorRepository fornecedorRepository;
+    private SupplierRepository fornecedorRepository;
 
     private final String baseUrl = "/api/v1/fornecedor";
 
     private final ObjectMapper mapper = new ObjectMapper();
     @Test
     public void SucessefulRegister() throws Exception{
-        FornecedorRequestDTO req = new FornecedorRequestDTO(
+        SupplierRequestDTO req = new SupplierRequestDTO(
             "teste@gmail.com", 
             "pppppppppp", 
             "11111111111", 
             "68.678.738/0001-46"
         );
-        Fornecedor myFornecedor = new Fornecedor(req);
+        Supplier myFornecedor = new Supplier(req);
 
         MvcResult resp = this.mvc.perform(
             post(this.baseUrl+"/register")
@@ -60,7 +60,7 @@ public class FornecedorControllerTests {
         .andExpect(status().isCreated())
         .andReturn();
 
-        Fornecedor resultFornecedor = mapper.readValue(resp.getResponse().getContentAsString(), Fornecedor.class);
+        Supplier resultFornecedor = mapper.readValue(resp.getResponse().getContentAsString(), Supplier.class);
         
         assertEquals(myFornecedor.getCnpj(), resultFornecedor.getCnpj());
         assertEquals(myFornecedor.getPhone_number(), resultFornecedor.getPhone_number());
@@ -72,7 +72,7 @@ public class FornecedorControllerTests {
     @Test
     public void badRequestCreate() throws Exception{
         // Invalid Cnpj
-        FornecedorRequestDTO requestDTO = new FornecedorRequestDTO(
+        SupplierRequestDTO requestDTO = new SupplierRequestDTO(
             "jj@gmail.com", 
             "test", 
             "11111111111", 
@@ -98,15 +98,15 @@ public class FornecedorControllerTests {
     
     @Test
     public void SucessulDelete() throws Exception{
-        FornecedorRequestDTO req = new FornecedorRequestDTO(
+        SupplierRequestDTO req = new SupplierRequestDTO(
             "teste@gmail.com", 
             "pppppppppp", 
             "11111111111", 
             "75.778.349/0001-58"
         );
-        fornecedorRepository.save(new Fornecedor(req));
+        fornecedorRepository.save(new Supplier(req));
 
-        FornecedorCNPJDTO requesDTO = new FornecedorCNPJDTO("75.778.349/0001-58");
+        SupplierCNPJDTO requesDTO = new SupplierCNPJDTO("75.778.349/0001-58");
         this.mvc.perform(
             delete(baseUrl+"/delete")
             .content(this.mapper.writeValueAsString(requesDTO))
@@ -118,7 +118,7 @@ public class FornecedorControllerTests {
 
     @Test
     public void notFoundDelete() throws Exception {
-        FornecedorCNPJDTO requesDTO = new FornecedorCNPJDTO("73.378.660/0001-84");
+        SupplierCNPJDTO requesDTO = new SupplierCNPJDTO("73.378.660/0001-84");
         MvcResult resp = this.mvc.perform(
             delete(baseUrl + "/delete")
             .content(this.mapper.writeValueAsString(requesDTO))
@@ -136,15 +136,15 @@ public class FornecedorControllerTests {
 
     @Test
     public void successfulUpdate() throws Exception {
-        FornecedorRequestDTO req = new FornecedorRequestDTO(
+        SupplierRequestDTO req = new SupplierRequestDTO(
             "original@gmail.com",
             "originalName",
             "12345678901",
             "53.608.573/0001-69"
         );
-        fornecedorRepository.save(new Fornecedor(req));
+        fornecedorRepository.save(new Supplier(req));
 
-        FornecedorRequestDTO updateReq = new FornecedorRequestDTO(
+        SupplierRequestDTO updateReq = new SupplierRequestDTO(
             "updated@gmail.com",
             "updatedName",
             "10987654321",
@@ -159,7 +159,7 @@ public class FornecedorControllerTests {
         .andDo(print())
         .andReturn();
 
-        Fornecedor resultFornecedor = mapper.readValue(resp.getResponse().getContentAsString(), Fornecedor.class);
+        Supplier resultFornecedor = mapper.readValue(resp.getResponse().getContentAsString(), Supplier.class);
 
         assertEquals(updateReq.getCnpj(), resultFornecedor.getCnpj());
         assertEquals(updateReq.getPhone_number(), resultFornecedor.getPhone_number());
@@ -170,7 +170,7 @@ public class FornecedorControllerTests {
 
     @Test
     public void badRequestUpdate() throws Exception {
-        FornecedorRequestDTO updateReq = new FornecedorRequestDTO(
+        SupplierRequestDTO updateReq = new SupplierRequestDTO(
             "failgmail.com",
             "failName",
             "00000000000",

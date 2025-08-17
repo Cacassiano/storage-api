@@ -13,11 +13,11 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity(name = "Produto")
-@Table(name="Produto")
+@Entity(name = "product")
+@Table(name="product")
 @Getter
 @Setter
-public class Produto {
+public class Product {
     @Id @Column(name="id", nullable=false, unique=true) @GeneratedValue(strategy=GenerationType.IDENTITY)
     Long id;
 
@@ -42,8 +42,8 @@ public class Produto {
     @Column(name="price_cents", unique=false)
     Long price_cents;
     
-    @OneToMany(mappedBy="lote_id")
-    List<Lote> lotes;
+    @OneToMany(mappedBy="id")
+    List<Batch> batchs;
 
     @Column(name="created_at", nullable=false, unique=false)
     LocalDateTime created_at;

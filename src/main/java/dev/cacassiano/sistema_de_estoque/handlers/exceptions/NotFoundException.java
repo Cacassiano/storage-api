@@ -1,4 +1,4 @@
-package dev.cacassiano.sistema_de_estoque.handlers.exception;
+package dev.cacassiano.sistema_de_estoque.handlers.exceptions;
 
 public class NotFoundException extends Exception {
     String message;
