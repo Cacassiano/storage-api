@@ -33,6 +33,9 @@ public class Batch {
     @Column(name="batch_amount", unique=false, nullable=false)
     int batch_amount;
 
+    @Column(name="active", unique=false, nullable=false)
+    boolean active;
+
     @ManyToOne
     @JoinColumn(name="supplier_cnpj")
     Supplier supplier;

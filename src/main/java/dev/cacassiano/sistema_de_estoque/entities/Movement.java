@@ -28,6 +28,10 @@ public class Movement {
     int amount;
 
     @ManyToOne
+    @JoinColumn(name="batch")
+    Batch batch;
+
+    @ManyToOne
     @JoinColumn(name="issuer")
     Supplier issuer;
 

@@ -10,6 +10,7 @@ import dev.cacassiano.sistema_de_estoque.adapters.repositories.SupplierRepositor
 import dev.cacassiano.sistema_de_estoque.adapters.services.SupplierService;
 import dev.cacassiano.sistema_de_estoque.entities.Supplier;
 import dev.cacassiano.sistema_de_estoque.handlers.exceptions.NotFoundException;
+
 @Service
 public class SupplierServiceImpl implements SupplierService{
 
