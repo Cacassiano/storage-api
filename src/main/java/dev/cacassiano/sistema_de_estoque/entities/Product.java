@@ -57,8 +57,8 @@ public class Product {
     @Column(name="updated_at", nullable=false, unique=false)
     LocalDateTime updated_at;
 
-    @Column(name="institution", nullable=false, unique=false)
-    String institution;
+    @Column(name="company", nullable=false, unique=false)
+    String company;
     
     public Product(ProductRequestDTO dto) {
         this.amount = 0;
@@ -71,7 +71,7 @@ public class Product {
         this.dosage = dto.getDosage();
         this.min = dto.getMin();
         this.notify = dto.getNotify();
-        this.price_cents = dto.getPrice_cents();
-        this.institution = "teste";
+        this.price_cents = (long)(dto.getPrice()*100);
+        this.company = "teste";
     }
 }

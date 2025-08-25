@@ -18,23 +18,23 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api/v1/fornecedor")
+@RequestMapping("/api/v1/suppliers")
 public class SupplierController {
 
     @Autowired
     private SupplierService service;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<Supplier> registerFornecedor(@RequestBody @Valid SupplierRequestDTO request) {
         return ResponseEntity.status(201).body(service.create(request));
     } 
 
-    @PutMapping("/update")
+    @PutMapping
     public ResponseEntity<Supplier> updateFornecedor(@RequestBody @Valid SupplierRequestDTO request) throws NotFoundException {
         return ResponseEntity.ok().body(service.update(request));
     } 
 
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<Void> deleteFornecedor(@RequestBody @Valid SupplierCNPJDTO req) throws NotFoundException {
         service.delete(req.getCnpj());
         return ResponseEntity.noContent().build();

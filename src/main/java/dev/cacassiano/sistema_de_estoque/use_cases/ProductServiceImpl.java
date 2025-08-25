@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository repository;
 	@Override
 	public Product create(Product product) {
-		repository.findByInstitutionAndProductId(product.getInstitution(), product.getProductId())
+		repository.findByCompanyAndProductId(product.getCompany(), product.getProductId())
             .ifPresent(existingProduct -> {
                 throw new DataIntegrityViolationException("Product already exists");
             });

@@ -35,5 +35,5 @@ public class ProductRequestDTO {
 
     @NotNull(message="price_cents must not be null ")
     @Min(value=0l, message="Must be at leat 0")
-    Long price_cents;
+    Double price;
 }

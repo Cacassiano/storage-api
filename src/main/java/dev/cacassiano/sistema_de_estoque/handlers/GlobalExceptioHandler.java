@@ -29,14 +29,14 @@ public class GlobalExceptioHandler {
         Map<String, String> resp = new HashMap<>();
         resp.put("Message", e.getMessage());
         resp.put("timestamp", OffsetDateTime.now().toString());
-        return ResponseEntity.internalServerError().body(resp);
+        return ResponseEntity.unprocessableEntity().body(resp);
     }
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Map<String, String>> notFoundExceptionHandler(NotFoundException e) {
         Map<String, String> resp = new HashMap<>();
         resp.put("Message", e.getMessage());
         resp.put("timestamp", OffsetDateTime.now().toString());
-        return ResponseEntity.internalServerError().body(resp);
+        return ResponseEntity.unprocessableEntity().body(resp);
     }
     // @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     // public ResponseEntity<Map<String, String>> invalidMethodHandler(HttpRequestMethodNotSupportedException e){

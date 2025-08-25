@@ -20,7 +20,7 @@ public class ProductResponseDTO {
 
     String measure;
 
-    Long price_cents;
+    double price;
 
     boolean notify;
     
@@ -30,7 +30,7 @@ public class ProductResponseDTO {
 
     String updated_at;
 
-    String institution;
+    String company;
     
     public ProductResponseDTO(Product product) {
         this.productId = product.getId();
@@ -39,11 +39,11 @@ public class ProductResponseDTO {
         this.min = product.getMin();
         this.dosage = product.getDosage();
         this.measure = product.getMeasure();
-        this.price_cents = product.getPrice_cents();
+        this.price = product.getPrice_cents()/100;
         this.notify = product.isNotify();
         this.batchs = product.getBatchs();
         this.created_at = product.getCreated_at().toString();
         this.updated_at = product.getUpdated_at().toString();
-        this.institution = product.getInstitution();
+        this.company = product.getCompany();
     }
 }

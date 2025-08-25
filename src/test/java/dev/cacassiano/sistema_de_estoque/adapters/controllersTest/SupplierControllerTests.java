@@ -39,7 +39,7 @@ public class SupplierControllerTests {
     @Autowired
     private SupplierRepository fornecedorRepository;
 
-    private final String baseUrl = "/api/v1/fornecedor";
+    private final String baseUrl = "/api/v1/suppliers";
 
     private final ObjectMapper mapper = new ObjectMapper();
     @Test
@@ -53,7 +53,7 @@ public class SupplierControllerTests {
         Supplier myFornecedor = new Supplier(req);
 
         MvcResult resp = this.mvc.perform(
-            post(this.baseUrl+"/register")
+            post(this.baseUrl)
             .contentType("application/json")
             .content(mapper.writeValueAsString(req))
         ).andDo(print())
@@ -80,7 +80,7 @@ public class SupplierControllerTests {
         );
         
         MvcResult resp = this.mvc.perform(
-            post(baseUrl+"/register")
+            post(baseUrl)
             .content(this.mapper.writeValueAsString(requestDTO))
             .contentType("application/json")
         ).andExpect(status().isBadRequest())
@@ -108,7 +108,7 @@ public class SupplierControllerTests {
 
         SupplierCNPJDTO requesDTO = new SupplierCNPJDTO("75.778.349/0001-58");
         this.mvc.perform(
-            delete(baseUrl+"/delete")
+            delete(baseUrl)
             .content(this.mapper.writeValueAsString(requesDTO))
             .contentType("application/json")
         ).andExpect(status().isNoContent());
@@ -120,10 +120,10 @@ public class SupplierControllerTests {
     public void notFoundDelete() throws Exception {
         SupplierCNPJDTO requesDTO = new SupplierCNPJDTO("73.378.660/0001-84");
         MvcResult resp = this.mvc.perform(
-            delete(baseUrl + "/delete")
+            delete(baseUrl)
             .content(this.mapper.writeValueAsString(requesDTO))
             .contentType("application/json")
-        ).andExpect(status().isInternalServerError())
+        ).andExpect(status().isUnprocessableEntity())
         .andDo(print())
         .andReturn();
 
@@ -152,7 +152,7 @@ public class SupplierControllerTests {
         );
 
         MvcResult resp = this.mvc.perform(
-            put(baseUrl + "/update")
+            put(baseUrl)
             .content(this.mapper.writeValueAsString(updateReq))
             .contentType("application/json")
         ).andExpect(status().isOk())
@@ -178,7 +178,7 @@ public class SupplierControllerTests {
         );
         // Fornecedor cnpj does not e
         MvcResult resp = this.mvc.perform(
-            put(baseUrl + "/update")
+            put(baseUrl)
             .content(this.mapper.writeValueAsString(updateReq))
             .contentType("application/json")
         ).andExpect(status().isBadRequest())

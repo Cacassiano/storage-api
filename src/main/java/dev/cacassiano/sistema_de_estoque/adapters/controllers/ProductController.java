@@ -15,13 +15,13 @@ import dev.cacassiano.sistema_de_estoque.entities.Product;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/produto")
+@RequestMapping("/api/v1/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<ProductResponseDTO> createProduct(@RequestBody @Valid ProductRequestDTO requestDTO) {
         Product prod = productService.create(new Product(requestDTO));
         return ResponseEntity.status(201)

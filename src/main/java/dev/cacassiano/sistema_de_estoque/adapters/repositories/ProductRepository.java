@@ -9,5 +9,5 @@ import dev.cacassiano.sistema_de_estoque.entities.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<Product> findByInstitutionAndProductId(String institution, Long productId);
+    Optional<Product> findByCompanyAndProductId(String company, Long productId);
 }
