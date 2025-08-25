@@ -8,15 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,15 @@ public class ProductController {
     @Autowired
     private ProductRepository repository;
 
+    private MvcResult sendRequest(MockHttpServletRequestBuilder req, String content) throws Exception {
+        return this.mvc.perform(
+            req
+            .contentType("application/json")
+            .content(content)
+        ).andDo(print())
+        .andReturn();
+    }
+
     @Test
     @DisplayName("Create a product sucessuly")
     public void SucessulCreate() throws Exception{
@@ -47,12 +57,9 @@ public class ProductController {
             "g",
             10.0
         );
-        this.mvc.perform(
-            post(this.baseUrl)
-            .content(mapper.writeValueAsString(requestDTO)) 
-            .contentType("application/json")
-        ).andDo(print())
-        .andExpect(status().isCreated());
+
+        MvcResult res = sendRequest(post(this.baseUrl), mapper.writeValueAsString(requestDTO));
+        assertEquals(res.getResponse().getStatus(), HttpStatus.CREATED.value());
 
         Optional<Product> optionalProd =  repository.findByCompanyAndProductId("teste", requestDTO.getProduct_id());
         assertTrue(optionalProd.isPresent());
@@ -90,16 +97,11 @@ public class ProductController {
             "mg",
             100.0
         );
-        MvcResult result = this.mvc.perform(
-            post(this.baseUrl)
-            .content(mapper.writeValueAsString(requestDTO)) 
-            .contentType("application/json")
-        ).andDo(print())
-        .andExpect(status().isUnprocessableEntity())
-        .andReturn();
+        MvcResult res = sendRequest(post(this.baseUrl), mapper.writeValueAsString(requestDTO));
+        assertEquals(res.getResponse().getStatus(), HttpStatus.UNPROCESSABLE_ENTITY.value());
 
         Map<String, String> resMap = mapper.readValue(
-            result.getResponse().getContentAsString(), 
+            res.getResponse().getContentAsString(), 
             new TypeReference<Map<String, String>>(){}
         );
 
@@ -112,6 +114,5 @@ public class ProductController {
         assertNotEquals(prod.getMin(), requestDTO.getMin());
         assertNotEquals(prod.getDosage(), requestDTO.getDosage());
         assertNotEquals(prod.getMeasure(), requestDTO.getMeasure());
-
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -16,9 +17,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import java.util.Map;
+
+import org.springframework.http.HttpStatus;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -42,6 +43,15 @@ public class SupplierControllerTests {
     private final String baseUrl = "/api/v1/suppliers";
 
     private final ObjectMapper mapper = new ObjectMapper();
+
+    private MvcResult sendRequest(MockHttpServletRequestBuilder req, String content) throws Exception {
+        return this.mvc.perform(
+            req
+            .contentType("application/json")
+            .content(content)
+        ).andDo(print())
+        .andReturn();
+    }
     @Test
     public void SucessefulRegister() throws Exception{
         SupplierRequestDTO req = new SupplierRequestDTO(
@@ -52,14 +62,9 @@ public class SupplierControllerTests {
         );
         Supplier myFornecedor = new Supplier(req);
 
-        MvcResult resp = this.mvc.perform(
-            post(this.baseUrl)
-            .contentType("application/json")
-            .content(mapper.writeValueAsString(req))
-        ).andDo(print())
-        .andExpect(status().isCreated())
-        .andReturn();
+        MvcResult resp = sendRequest(post(this.baseUrl), mapper.writeValueAsString(req));
 
+        assertEquals(resp.getResponse().getStatus(), HttpStatus.CREATED.value());
         Supplier resultFornecedor = mapper.readValue(resp.getResponse().getContentAsString(), Supplier.class);
         
         assertEquals(myFornecedor.getCnpj(), resultFornecedor.getCnpj());
@@ -78,14 +83,10 @@ public class SupplierControllerTests {
             "11111111111", 
             "53.608.573/0001-68"
         );
-        
-        MvcResult resp = this.mvc.perform(
-            post(baseUrl)
-            .content(this.mapper.writeValueAsString(requestDTO))
-            .contentType("application/json")
-        ).andExpect(status().isBadRequest())
-        .andDo(print())
-        .andReturn();
+
+        MvcResult resp = sendRequest(post(this.baseUrl), mapper.writeValueAsString(requestDTO));
+        assertEquals(resp.getResponse().getStatus(), HttpStatus.BAD_REQUEST.value());
+
         Map<String, String> respMap = this.mapper.readValue(
             resp.getResponse().getContentAsString(), 
             new TypeReference<Map<String, String>>(){}
@@ -106,26 +107,20 @@ public class SupplierControllerTests {
         );
         fornecedorRepository.save(new Supplier(req));
 
-        SupplierCNPJDTO requesDTO = new SupplierCNPJDTO("75.778.349/0001-58");
-        this.mvc.perform(
-            delete(baseUrl)
-            .content(this.mapper.writeValueAsString(requesDTO))
-            .contentType("application/json")
-        ).andExpect(status().isNoContent());
+        SupplierCNPJDTO requestDTO = new SupplierCNPJDTO("75.778.349/0001-58");
+        
+        MvcResult resp = sendRequest(delete(this.baseUrl), mapper.writeValueAsString(requestDTO));
+        assertEquals(resp.getResponse().getStatus(), HttpStatus.NO_CONTENT.value());
 
         assertFalse(fornecedorRepository.existsById(req.getCnpj()));
     }
 
     @Test
     public void notFoundDelete() throws Exception {
-        SupplierCNPJDTO requesDTO = new SupplierCNPJDTO("73.378.660/0001-84");
-        MvcResult resp = this.mvc.perform(
-            delete(baseUrl)
-            .content(this.mapper.writeValueAsString(requesDTO))
-            .contentType("application/json")
-        ).andExpect(status().isUnprocessableEntity())
-        .andDo(print())
-        .andReturn();
+        SupplierCNPJDTO requestDTO = new SupplierCNPJDTO("73.378.660/0001-84");
+
+        MvcResult resp = sendRequest(delete(this.baseUrl), mapper.writeValueAsString(requestDTO));
+        assertEquals(resp.getResponse().getStatus(), HttpStatus.UNPROCESSABLE_ENTITY.value());
 
         Map<String, String> respMap = this.mapper.readValue(
             resp.getResponse().getContentAsString(),
@@ -151,13 +146,8 @@ public class SupplierControllerTests {
             "53.608.573/0001-69"
         );
 
-        MvcResult resp = this.mvc.perform(
-            put(baseUrl)
-            .content(this.mapper.writeValueAsString(updateReq))
-            .contentType("application/json")
-        ).andExpect(status().isOk())
-        .andDo(print())
-        .andReturn();
+        MvcResult resp = sendRequest(put(this.baseUrl), mapper.writeValueAsString(updateReq));
+        assertEquals(resp.getResponse().getStatus(), HttpStatus.OK.value());
 
         Supplier resultFornecedor = mapper.readValue(resp.getResponse().getContentAsString(), Supplier.class);
 
@@ -167,7 +157,6 @@ public class SupplierControllerTests {
         assertEquals(updateReq.getEmail(), resultFornecedor.getEmail());
         assertTrue(fornecedorRepository.existsById(req.getCnpj()));
     }
-
     @Test
     public void badRequestUpdate() throws Exception {
         SupplierRequestDTO updateReq = new SupplierRequestDTO(
@@ -177,13 +166,8 @@ public class SupplierControllerTests {
             "73.378.660/0001-84"
         );
         // Fornecedor cnpj does not e
-        MvcResult resp = this.mvc.perform(
-            put(baseUrl)
-            .content(this.mapper.writeValueAsString(updateReq))
-            .contentType("application/json")
-        ).andExpect(status().isBadRequest())
-        .andDo(print())
-        .andReturn();
+        MvcResult resp = sendRequest(put(this.baseUrl), mapper.writeValueAsString(updateReq));
+        assertEquals(resp.getResponse().getStatus(), HttpStatus.BAD_REQUEST.value());
 
         Map<String, String> respMap = this.mapper.readValue(
             resp.getResponse().getContentAsString(),
